@@ -74,6 +74,27 @@ Captures highly dense enterprise datasets detailing throughput margins, lifecycl
 
 ---
 
+## Repository Structure
+
+```text
+goat/
+├── backend/
+│   ├── main.go               # Entry point, WebSocket instantiator, Grid builder
+│   ├── report_generator.go   # Sub-millisecond PDF vector-graphics reporting engine
+│   ├── config.yaml           # Hot-swappable environment variables (preset definitions)
+│   └── simulation/
+│       ├── controller.go     # Physics Engine (A* Math, Deadlock Resolvers, Locks)
+│       ├── graph.go          # Matrix routing definitions (Nodes, Lanes, Capacity)
+│       └── robot.go          # Live memory structures for hardware tracking/battery
+└── frontend/
+    ├── index.html            # Core DOM structure and Terminal mounting points
+    ├── main.js               # WebGL/Canvas rendering loop and WebSocket client
+    ├── style.css             # Cyberpunk UI, layout containers, and styling logic
+    └── package.json          # Node dependency configurations (Vite)
+```
+
+---
+
 ## Execution & Deployment Requirements
 
 Execution requires robust hardware scaling and updated compilation environments.
