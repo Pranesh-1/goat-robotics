@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PulseAI | Lane-Aware Traffic Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div id="app">
+      <div id="sidebar">
+        <div class="logo">GOAT<span>BOTICS</span></div>
+        <p class="subtitle">Multi-Robot Traffic Core</p>
+        
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Active Robots</span>
+            <span class="metric-value" id="val-robots">0</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Avg Speed (m/s)</span>
+            <span class="metric-value" id="val-speed">0.0</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Throughput (Goals/min)</span>
+            <span class="metric-value text-green" id="val-throughput">0.0</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Wait Delay (sec)</span>
+            <span class="metric-value" id="val-delay" style="color: #f43f5e;">0.0</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 1rem; border-top: 1px solid #1e293b; padding-top: 1rem;">
+          <h3 style="margin-bottom: 0.5rem; font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Scenario Presets</h3>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+            <button id="btn-small" class="preset-btn active" onclick="loadPreset('small')">Small (5x5)</button>
+            <button id="btn-large" class="preset-btn" onclick="loadPreset('large')">Large (10x6)</button>
+          </div>
+          
+          <button class="export-btn" onclick="window.open('http://localhost:8080/api/report/download', '_blank')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: text-bottom; margin-right: 4px;">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+            </svg>
+            Export PDF Report
+          </button>
+        </div>
+
+        <div class="legend">
+          <h3>Heatmap Legend</h3>
+          <div class="legend-item"><div class="color-box c-free"></div> Free / Idle</div>
+          <div class="legend-item"><div class="color-box c-blue"></div> Reserved (Approaching)</div>
+          <div class="legend-item"><div class="color-box c-occ"></div> Occupied (Robot On Lane)</div>
+
+          <div class="legend-spacer"></div>
+
+          <h3>Robot Legend</h3>
+          <div class="legend-item"><div class="color-dot r-idle"></div> Idle</div>
+          <div class="legend-item"><div class="color-dot r-moving"></div> Moving</div>
+          <div class="legend-item"><div class="color-dot r-wait"></div> Blocked / Yielding</div>
+          <div class="legend-item"><div class="color-dot r-charging"></div> Charging</div>
+        </div>
+      </div>
+
+      <div id="canvas-container">
+        <button id="btn-estop" class="estop-button">EMERGENCY STOP</button>
+        <canvas id="simCanvas"></canvas>
+        <div id="event-log">
+          <div id="event-log-header">
+            <span>&#9654; SYSTEM EVENT LOG</span>
+            <span id="event-log-count">0 events</span>
+          </div>
+          <div id="event-log-body"></div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
