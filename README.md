@@ -1,47 +1,102 @@
-# GOAT Robotics - Industrial Fleet Management System
+# GOAT Robotics: Autonomous Industrial Fleet Management System
 
 GOAT Robotics is an enterprise-grade autonomous grid simulation and fleet management hypervisor. Engineered in Go and React, the platform orchestrates complex Swarm AI pathing, physics-compliant intersection constraints, and high-density industrial telemetry in real-time.
 
-## Architecture
+---
 
-The system utilizes a decoupled architecture to guarantee high-performance 60Hz physics and rendering isolation:
+## System Architecture
 
-- **Hypervisor (Backend)**: Built in Go. Operates a stateful grid engine utilizing mathematical A* routing algorithms, highly-penalized transit locks, cyclic deadlock detection via Depth-First Search (DFS), and dynamic environmental hazard tracking. Payload snapshots are pushed out natively via WebSockets.
-- **Frontend Dashboard**: Built in Vite and React. Captures deep telemetric data payloads and renders an aesthetic, frame-perfect canvas representing traffic flow, congestion scores, battery margins, and E-Stop protocols.
+The overarching architecture is bifurcated into a high-octane mathematical modeling backend and an aesthetic, high-framerate observability bridge.
 
-## Core Capabilities
+```mermaid
+graph TD
+    classDef blue fill:#0f172a,stroke:#3b82f6,stroke-width:2px,color:#fff
+    classDef green fill:#0f172a,stroke:#10b981,stroke-width:2px,color:#fff
+    classDef cyan fill:#0f172a,stroke:#06b6d4,stroke-width:2px,color:#fff
+    classDef red fill:#0f172a,stroke:#ef4444,stroke-width:2px,color:#fff
 
-- **Intelligent Routing**: Dynamic A* pathfinding strictly penalizes congested lanes and actively avoids unpredictable grid hazards (e.g., chemical spills) by immediately rerouting highly active units in wide structural arcs.
-- **Priority Tiering**: Instantiates complex hierarchical right-of-way routing. High Priority (VIP) dispatch units aggressively hold locks and mathematically repel lower-tier robots from gridlock centers, enforcing fluid bypass lanes.
-- **Physics-Compliant Transit**: Enforces intersection constraints ensuring pass-through lanes collapse appropriately when a robotic unit engages a docking action at a multi-tier charging port limit.
-- **Deadlock Resolution**: Employs an aggressive cyclic deadlock tracker. When a locked loop occurs, the supervisor maps the wait-for graph, identifies the lowest-tier participant in the knot, and forcefully invalidates their pathing lock to rapidly evaporate the traffic jam.
-- **Energy Lifecycle**: Simulates finite lithium-ion discharge. Robots monitor real-time capacity and reserve emergency charging intent bounds prior to draining below threshold limitations. Dead robots activate towing protocols.
-- **Reporting Engine**: Synthesizes live 60-second slice analytics into PDF telemetry reports capturing active hazard states, unit delays, and VIP deployment margins.
+    subgraph "Frontend Orchestrator (React/Vite)"
+        StateReceiver[WebSocket State Receiver]:::cyan
+        CanvasRenderer[60Hz Canvas Geometry Renderer]:::blue
+        TerminalLog[Real-Time Event Stream]:::blue
+    end
 
-## Execution Requirements
+    subgraph "Backend Hypervisor (Go)"
+        WSServer[WebSocket Broadcaster]:::cyan
+        PhysicsEngine[Simulation Tick Engine]:::green
+        ConfigLoader[YAML Preset Injector]:::blue
+        
+        subgraph "Mathematical Control Logic"
+            Pathing[A* Congestion-Aware Router]:::green
+            Locks[Physics Transit Lock Manager]:::green
+            Deadlock[DFS Deadlock & Cycle Resolution]:::red
+            Hazards[Dynamic Spill/Hazard Generator]:::red
+        end
+    end
 
-- Go 1.21 or higher
-- Node.js 18 or higher
+    StateReceiver <-.->|"JSON Payload (States, Metrics, Log)"| WSServer
+    
+    WSServer --- PhysicsEngine
+    ConfigLoader --> PhysicsEngine
+    
+    PhysicsEngine --- Pathing
+    PhysicsEngine --- Locks
+    PhysicsEngine --- Deadlock
+    PhysicsEngine --- Hazards
 
-## Deployment Instructions
+    StateReceiver --> CanvasRenderer
+    StateReceiver --> TerminalLog
+```
 
-### Initiating the Go Telemetry Engine
+---
 
-1. Navigate to the backend directory.
-2. Ensure network port 8080 is available.
-3. Establish the execution environment:
+## Core Technical Capabilities
+
+The hypervisor deviates from basic line-following constraints, introducing fully organic and highly competitive multi-agent swarm environments.
+
+### 1. Intelligent Neural Routing
+A mathematically intensive **A* Pathfinding Algorithm** forces dispatch units to actively avoid heavily congested intersection lanes. The algorithm dynamically applies infinite-weight cost values to unpredictable toxic spills or blockades, forcing units to compute massive structural arcs around hazard zones. 
+
+### 2. High-Priority Fleet Tiers (VIP Dispatch)
+Instantiates complex hierarchical right-of-way routing. High-Priority elements inherently hold pathing locks longer, mathematically repelling standard Kiva units away from congested cores and ensuring rapid clearance for mission-critical objectives.
+
+### 3. Cyclic Deadlock Annihilation
+Unpredictable swarm collisions inherently formulate impossible looping gridlocks. The hypervisor continuously scans the wait-for maps utilizing iterative **Depth-First Search (DFS) topology tracking**. When a cycle is verified, the system systematically extracts the lowest-priority participant and mathematically ejects them entirely from the grid queue, evaporating traffic collapse instantly.
+
+### 4. Physics-Compliant Transit Limits
+Charging sectors and heavily trafficked hub terminals strictly enforce physics-based maximum occupation quotas. Unlike simplistic simulations, rendering overlap is fiercely rejected by the locking mechanisms, isolating the boundaries and queuing exterior traffic geometrically.
+
+### 5. Lithium-Ion Energy Simulation
+Finite energy tracking dictates dynamic swarm constraints. If a robotic construct breaches critical low-power thresholds, its priority logic overwrites objective goals and immediately targets the closest available charging hub. Total depletion events invoke physical immobility bounds, activating rescue towing protocols.
+
+### 6. Sub-Millisecond PDF Telemetry
+Captures highly dense enterprise datasets detailing throughput margins, lifecycle delays, active physical hazards, and hierarchical tier ratios, compiling them dynamically via vector graphic reporting (gofpdf).
+
+---
+
+## Execution & Deployment Requirements
+
+Execution requires robust hardware scaling and updated compilation environments.
+
+* **Backend Engine**: Go 1.21+
+* **Frontend UI**: Node.js 18+ (NPM, Vite)
+
+### Activating the Core
+
+1. Navigate to the execution environment.
+2. Ensure WebSocket streaming is available on port `8080`.
 
 ```bash
 cd backend
 go run main.go report_generator.go
 ```
 
-The Go engine will immediately mount the websocket framework and output operational lifecycle events.
+The system will initialize the grid mapping arrays and stand by for client-side mounting.
 
-### Initiating the React Dashboard
+### Activating the Visor
 
-1. Navigate to the frontend directory.
-2. Compile and mount the Vite instance:
+1. Construct the DOM payload dependencies via NPM.
+2. Initialize the hot-reload engine.
 
 ```bash
 cd frontend
@@ -49,8 +104,10 @@ npm install
 npm run dev
 ```
 
-Navigate to the localhost port provided by Vite (typically 5173). The dashboard will automatically connect to the backend socket layer and begin streaming the autonomous swarm logic.
+Intercept the localized port (typically `http://localhost:5173`) using a modern Chromium or WebKit browser. The connection will handshake and the autonomous swarm will execute immediately.
+
+---
 
 ## Configuration Profiles
 
-The hypervisor supports hot-swapping configuration profiles in real-time. Modify `backend/config.yaml` to drastically alter the density grid width, length, lane velocity, and maximum active dispatch capacity. Alterations directly impact deadlock frequency and processor overhead calculations.
+Standard profiles exist for various stress tests. The `Small` tier establishes basic logic validation across 8 units, while the `Large` tier heavily taxes algorithm resolution thresholds by saturating 25 units internally across a 10x6 matrix. Altering `backend/config.yaml` propagates changes atomically on refresh.
