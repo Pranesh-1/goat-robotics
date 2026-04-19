@@ -1,5 +1,7 @@
 # GOAT Robotics: Autonomous Industrial Fleet Management System
 
+**[Watch the 5-Minute Technical Pitch & Simulation Demo Here](https://drive.google.com/file/d/1HGOYl4w_ldLJkIU4WuGrsJ-unZmrrNUP/view?usp=sharing)**
+
 GOAT Robotics is an enterprise-grade autonomous grid simulation and fleet management hypervisor. Engineered in Go and React, the platform orchestrates complex Swarm AI pathing, physics-compliant intersection constraints, and high-density industrial telemetry in real-time.
 
 ---
